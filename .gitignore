@@ -1,0 +1,16 @@
+# Node dependencies & tools
+node_modules/
+package.json
+package-lock.json
+optimize-images.js
+test-images.html
+*.log
+
+# Exclude raw 100MB+ uncompressed videos not used on site
+videos/*.mov
+videos/*.MOV
+videos/6CDCCDCE-A32E-4379-B6B2-64BD84A77566.mp4
+videos/A9E5C228-9B48-4632-A44B-F7D90FF78663.mp4
+videos/copy_*
+background/
+run videos/

@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNBOUND Run Club | PCMC, Pune</title>
+    <meta name="description" content="UNBOUND Run Club — PCMC's first community run club. Show up. Meet people. Stay unbound.">
+    <meta name="theme-color" content="#000000">
+    <!-- iOS PWA / Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="UNBOUND">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Open Graph -->
+    <meta property="og:title" content="UNBOUND Run Club | PCMC, Pune">
+    <meta property="og:description" content="PCMC's first community run club. Show up. Meet people. Stay unbound.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════ VARIABLES ═══════════ */
+        :root {
+            --neon: #CCFF00;
+            --neon-dim: rgba(204, 255, 0, 0.12);
+            --neon-glow: rgba(204, 255, 0, 0.4);
+            --neon-dark: #A3CC00;
+            --black: #000000;
+            --dark: #060606;
+            --dark-2: #0e0e0e;
+            --dark-3: #161616;
+            --dark-4: #1a1a1a;
+            --white: #ffffff;
+            --gray: #777777;
+            --gray-light: #aaaaaa;
+            --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+            /* Safe areas for notched phones */
+            --sat: env(safe-area-inset-top, 0px);
+            --sar: env(safe-area-inset-right, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sal: env(safe-area-inset-left, 0px);
+        }
+
+        /* ═══════════ RESET ═══════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon) var(--dark);
+            -webkit-text-size-adjust: 100%;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
+        ::selection { background: var(--neon); color: var(--black); }
+        body {
+            font-family: var(--font-body);
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            /* Prevent pull-to-refresh on mobile */
+            overscroll-behavior-y: contain;
+        }
+        a { color: inherit; text-decoration: none; touch-action: manipulation; }
+        img { display: block; max-width: 100%; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; touch-action: manipulation; }
+
+        /* ═══════════ PRELOADER ═══════════ */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--black);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s var(--ease-out-expo), visibility 0.6s;
+        }
+        .preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader-logo {
+            width: 80px;
+            animation: pulse-glow 1.2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 8px var(--neon-glow)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 24px var(--neon)); transform: scale(1.05); }
+        }
+
+        /* ═══════════ NAVIGATION ═══════════ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: calc(1.25rem + var(--sat)) 2rem 1.25rem;
+            padding-left: calc(2rem + var(--sal));
+            padding-right: calc(2rem + var(--sar));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+        .nav.scrolled {
+            padding-top: calc(0.75rem + var(--sat));
+            padding-bottom: 0.75rem;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            border-bottom: 1px solid rgba(204, 255, 0, 0.08);
+        }
+        .nav-logo img { height: 42px; width: auto; transition: height 0.4s var(--ease-out-expo); }
+        .nav.scrolled .nav-logo img { height: 34px; }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--neon);
+            transition: width 0.3s var(--ease-out-expo);
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--neon); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-cta {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.65rem 1.5rem;
+            background: var(--neon);
+            color: var(--black);
+            border-radius: 2px;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+        .nav-cta:hover { background: var(--white); box-shadow: 0 0 30px var(--neon-glow); }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            z-index: 1001;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--white);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--neon); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--neon); }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            z-index: 999;
+            opacity: 0; visibility: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            padding: var(--sat) var(--sar) var(--sab) var(--sal);
+        }
+        .mobile-menu.open { opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--white);
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .mobile-menu a:hover { color: var(--neon); }
+
+        /* ═══════════ HERO ═══════════ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            height: 100dvh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.4) 0%,
+                rgba(0,0,0,0.2) 40%,
+                rgba(0,0,0,0.6) 80%,
+                rgba(0,0,0,1) 100%
+            );
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            padding: 0 2rem;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-bottom: 2rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(204, 255, 0, 0.25);
+            border-radius: 50px;
+        }
+        .hero-badge .dot {
+            width: 6px; height: 6px;
+            background: var(--neon);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .hero-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        .hero-title .line1 {
+            display: block;
+            font-size: clamp(3.5rem, 12vw, 10rem);
+            color: var(--white);
+        }
+        .hero-title .line2 {
+            display: block;
+            font-size: clamp(2rem, 5vw, 4rem);
+            color: var(--neon);
+            letter-spacing: 0.15em;
+            font-weight: 500;
+        }
+        .hero-location {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+        }
+        .hero-tagline {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            color: var(--gray-light);
+            font-style: italic;
+        }
+        .hero-tagline em { color: var(--neon); font-style: normal; font-weight: 500; }
+        .hero-scroll {
+            position: absolute;
+            bottom: calc(2rem + var(--sab)); left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .hero-scroll .scroll-line {
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--neon), transparent);
+            animation: scroll-down 2s ease-in-out infinite;
+        }
+        @keyframes scroll-down {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* ═══════════ SECTIONS COMMON ═══════════ */
+        section { position: relative; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            padding-left: calc(2rem + var(--sal));
+            padding-right: calc(2rem + var(--sar));
+        }
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 30px; height: 1px;
+            background: var(--neon);
+        }
+
+        /* ═══════════ ABOUT / STORY ═══════════ */
+        .about { padding: 8rem 0; background: var(--black); }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .about-left { position: sticky; top: 120px; }
+        .about-big-text {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--white);
+            margin-bottom: 2rem;
+        }
+        .about-big-text span { color: var(--neon); }
+        .about-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-top: 2rem;
+            filter: grayscale(0.3);
+            transition: filter 0.5s;
+        }
+        .about-image:hover { filter: grayscale(0); }
+        .about-right { padding-top: 1rem; }
+        .about-right p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--gray-light);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        .about-right p strong { color: var(--white); font-weight: 500; }
+        .about-right p em { color: var(--neon); font-style: normal; font-weight: 500; }
+        .about-highlight {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.4;
+            margin: 2.5rem 0;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--neon);
+        }
+        .about-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+        .about-list li {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--gray-light);
+            font-weight: 300;
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .about-list li::before {
+            content: '\2192';
+            position: absolute;
+            left: 0;
+            color: var(--neon);
+            font-weight: 600;
+        }
+
+        /* ═══════════ MANIFESTO STRIP ═══════════ */
+        .manifesto {
+            padding: 6rem 0;
+            background: var(--dark-2);
+            overflow: hidden;
+        }
+        .manifesto-track {
+            display: flex;
+            gap: 3rem;
+            animation: marquee 25s linear infinite;
+            width: max-content;
+        }
+        .manifesto-item {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gray);
+            transition: all 0.3s;
+        }
+        .manifesto-item.filled {
+            color: var(--neon);
+            -webkit-text-stroke: 0;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ═══════════ FEATURES ═══════════ */
+        .features { padding: 6rem 0; background: var(--black); }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .feature-card {
+            background: var(--dark-2);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            transition: all 0.5s var(--ease-out-expo);
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+        .feature-card:hover {
+            border-color: rgba(204, 255, 0, 0.15);
+            background: var(--dark-3);
+            box-shadow: 0 20px 60px -15px rgba(204, 255, 0, 0.08);
+            transform: translateY(-4px);
+        }
+        .feature-icon {
+            width: 48px; height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--neon-dim);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .feature-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--white);
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        /* ═══════════ GALLERY ═══════════ */
+        .gallery { padding: 6rem 0; background: var(--dark); }
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+        }
+        .gallery-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 280px;
+            gap: 0.75rem;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.5s var(--ease-out-expo);
+            /* Fallback background so broken images don't show white */
+            background: var(--dark-3);
+        }
+        .gallery-item:hover { transform: scale(1.02); z-index: 2; }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease-out-expo), filter 0.4s;
+            filter: grayscale(0.15);
+        }
+        .gallery-item:hover img { transform: scale(1.08); filter: grayscale(0); }
+        .gallery-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .gallery-item:hover::after { opacity: 1; }
+        /* Span variations */
+        .gallery-item.wide { grid-column: span 2; }
+        .gallery-item.tall { grid-row: span 2; }
+        .gallery-item.big { grid-column: span 2; grid-row: span 2; }
+
+        /* ═══════════ LIGHTBOX ═══════════ */
+        .lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            cursor: zoom-out;
+            padding: var(--sat) var(--sar) var(--sab) var(--sal);
+        }
+        .lightbox.open { opacity: 1; visibility: visible; }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            transform: scale(0.9);
+            transition: transform 0.4s var(--ease-out-expo);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .lightbox.open img { transform: scale(1); }
+        .lightbox-close {
+            position: absolute;
+            top: calc(1rem + var(--sat)); right: calc(1rem + var(--sar));
+            font-size: 2rem;
+            color: var(--white);
+            cursor: pointer;
+            z-index: 10000;
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+        .lightbox-close:hover { color: var(--neon); }
+
+        /* ═══════════ REELS ═══════════ */
+        .reels { padding: 6rem 0; background: var(--black); overflow: hidden; }
+        .reels-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+        }
+        .reels-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+        }
+        .reels-scroll-hint {
+            font-size: 0.75rem;
+            color: var(--gray);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .reels-track {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+            scrollbar-width: none;
+        }
+        .reels-track::-webkit-scrollbar { display: none; }
+        .reel-card {
+            flex: 0 0 300px;
+            scroll-snap-align: center;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--dark-2);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+        .reel-card:hover {
+            border-color: rgba(204, 255, 0, 0.2);
+            box-shadow: 0 8px 40px -10px rgba(204, 255, 0, 0.1);
+            transform: translateY(-4px);
+        }
+        .reel-card video {
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            background: var(--dark-3);
+        }
+        .reel-card .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .reel-card .play-btn {
+            width: 56px; height: 56px;
+            background: var(--neon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px var(--neon-glow);
+        }
+        .reel-card .play-btn svg { width: 20px; height: 20px; fill: var(--black); margin-left: 3px; }
+        .reel-card.playing .play-overlay { opacity: 0; }
+
+        /* ═══════════ THE FUN PART ═══════════ */
+        .fun { padding: 6rem 0; background: var(--dark-2); overflow: hidden; }
+        .fun-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+        }
+        .fun-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+        }
+        .fun-sub {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 300;
+            margin-top: 0.5rem;
+            max-width: 450px;
+        }
+        .fun-track {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+            scrollbar-width: none;
+        }
+        .fun-track::-webkit-scrollbar { display: none; }
+        .fun-card {
+            flex: 0 0 300px;
+            scroll-snap-align: center;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--dark-3);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+        .fun-card:hover {
+            border-color: rgba(204, 255, 0, 0.2);
+            box-shadow: 0 8px 40px -10px rgba(204, 255, 0, 0.1);
+            transform: translateY(-4px);
+        }
+        .fun-card video {
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            background: var(--dark-3);
+        }
+        .fun-card .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .fun-card .play-btn {
+            width: 56px; height: 56px;
+            background: var(--neon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px var(--neon-glow);
+        }
+        .fun-card .play-btn svg { width: 20px; height: 20px; fill: var(--black); margin-left: 3px; }
+        .fun-card.playing .play-overlay { opacity: 0; }
+
+        /* ═══════════ JOIN / CTA ═══════════ */
+        .join {
+            padding: 10rem 0;
+            background: var(--neon);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .join::before {
+            content: 'SHOW UP';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-heading);
+            font-size: clamp(8rem, 20vw, 18rem);
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.06);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .join-content { position: relative; z-index: 2; }
+        .join-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--black);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+        .join-sub {
+            font-size: 1.15rem;
+            color: rgba(0, 0, 0, 0.6);
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        .join-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            background: var(--black);
+            color: var(--neon);
+            border-radius: 4px;
+            transition: all 0.4s var(--ease-out-expo);
+            min-height: 48px;
+        }
+        .join-btn:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .join-btn svg { width: 18px; height: 18px; transition: transform 0.3s; }
+        .join-btn:hover svg { transform: translateX(4px); }
+
+        /* ═══════════ FOOTER ═══════════ */
+        .footer {
+            padding: 4rem 0 2rem;
+            padding-bottom: calc(2rem + var(--sab));
+            background: var(--black);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .footer-brand img { height: 50px; margin-bottom: 1rem; }
+        .footer-brand p { font-size: 0.85rem; color: var(--gray); max-width: 280px; line-height: 1.6; }
+        .footer-links h4 {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-bottom: 1rem;
+        }
+        .footer-links a {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            padding: 0.35rem 0;
+            transition: color 0.3s;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .footer-links a:hover { color: var(--white); }
+        .footer-social { display: flex; gap: 1rem; }
+        .footer-social a {
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .footer-social a:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        .footer-bottom a { color: var(--neon); }
+
+        /* ═══════════ SCROLL ANIMATIONS ═══════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ═══════════ RESPONSIVE ═══════════ */
+        @media (max-width: 1024px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-left { position: static; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: 220px;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav {
+                padding-left: calc(1.25rem + var(--sal));
+                padding-right: calc(1.25rem + var(--sar));
+            }
+            .nav.scrolled {
+                padding-left: calc(1.25rem + var(--sal));
+                padding-right: calc(1.25rem + var(--sar));
+            }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero-title .line1 { font-size: 3.5rem; }
+            .hero-title .line2 { font-size: 1.5rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 200px;
+            }
+            .gallery-item.wide,
+            .gallery-item.big { grid-column: span 2; }
+            .gallery-item.tall { grid-row: span 1; }
+            .reel-card { flex: 0 0 250px; }
+            .fun-card { flex: 0 0 250px; }
+            .join { padding: 6rem 0; }
+            .join-title { font-size: 2.5rem; }
+            .footer-grid { flex-direction: column; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .container {
+                padding-left: calc(1.25rem + var(--sal));
+                padding-right: calc(1.25rem + var(--sar));
+            }
+            .about { padding: 5rem 0; }
+            .about-highlight { font-size: 1.3rem; }
+            .manifesto { padding: 4rem 0; }
+            .features { padding: 4rem 0; }
+            .gallery { padding: 4rem 0; }
+            .reels { padding: 4rem 0; }
+            .fun { padding: 4rem 0; }
+            .fun-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .reels-header .reels-scroll-hint { display: none; }
+            .fun-header .reels-scroll-hint { display: none; }
+        }
+        @media (max-width: 480px) {
+            .hero-badge { font-size: 0.6rem; padding: 0.4rem 1rem; }
+            .hero-title .line1 { font-size: 2.8rem; }
+            .hero-title .line2 { font-size: 1.2rem; }
+            .hero-location { font-size: 0.75rem; letter-spacing: 0.25em; }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-auto-rows: 180px;
+            }
+            .reel-card { flex: 0 0 220px; }
+            .fun-card { flex: 0 0 220px; }
+            .reel-card .play-btn,
+            .fun-card .play-btn {
+                width: 48px; height: 48px;
+            }
+            .reel-card .play-btn svg,
+            .fun-card .play-btn svg {
+                width: 16px; height: 16px;
+            }
+            .join-btn {
+                font-size: 0.75rem;
+                padding: 0.85rem 2rem;
+            }
+        }
+
+        /* ═══════════ REDUCED MOTION ═══════════ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .reveal, .reveal-scale, .reveal-left { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════ PRELOADER ═══════════ -->
+    <div class="preloader" id="preloader">
+        <img src="logo-circle.png" alt="UB" class="preloader-logo">
+    </div>
+
+    <!-- ═══════════ NAVIGATION ═══════════ -->
+    <nav class="nav" id="nav">
+        <a href="#hero" class="nav-logo">
+            <img src="logo.png" alt="UNBOUND Run Club">
+        </a>
+        <div class="nav-links">
+            <a href="#about">Our Story</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#reels">Runs</a>
+            <a href="#fun">Fun</a>
+            <a href="#join" class="nav-cta">Join Us</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about">Our Story</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reels">Runs</a>
+        <a href="#fun">Fun</a>
+        <a href="#join">Join Us</a>
+    </div>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero" id="hero">
+        <video class="hero-video" autoplay muted loop playsinline webkit-playsinline poster="images/DSC_5596.jpeg">
+            <source src="IMG_3481.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span> PCMC's Run Club</div>
+            <h1 class="hero-title">
+                <span class="line1">UNBOUND</span>
+                <span class="line2">RUN CLUB</span>
+            </h1>
+            <p class="hero-location">PCMC &bull; Pune</p>
+            <p class="hero-tagline">Show up. <em>Stay unbound.</em></p>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════ ABOUT ═══════════ -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-left">
+                    <div class="section-label reveal">Our Story</div>
+                    <h2 class="about-big-text reveal reveal-delay-1">
+                        We just wanted <span>something to do.</span>
+                    </h2>
+                    <img src="images/DSC_5583.jpeg" alt="Unbound Run Club crew" class="about-image reveal-scale" loading="lazy">
+                </div>
+                <div class="about-right">
+                    <p class="reveal">
+                        There were gyms. There were cafes. There were malls.
+                        But when it came to actually doing something <strong>together</strong>?
+                    </p>
+                    <p class="reveal">
+                        <strong>Nothing.</strong><br>
+                        No run club. No community. No place to show up, meet new people and just... <em>vibe.</em>
+                    </p>
+                    <p class="reveal">
+                        So we thought — <strong>why wait for someone else to start one?</strong>
+                    </p>
+
+                    <div class="about-highlight reveal">
+                        Run. Meet people. Have a good time.
+                    </div>
+
+                    <p class="reveal">
+                        You don't need to be a runner. You don't need to be fast.
+                        You definitely don't need to own those &#x20B9;10,000 running shoes.
+                    </p>
+                    <p class="reveal"><em>Just show up.</em></p>
+                    <p class="reveal">
+                        Because somewhere between the first kilometre, the random conversations,
+                        the terrible jokes, the post-run chai and the people you met for the first time...
+                    </p>
+                    <p class="reveal">
+                        <strong>Running became the excuse.</strong><br>
+                        <strong>The people became the reason.</strong>
+                    </p>
+
+                    <div class="about-highlight reveal">
+                        A place to show up.
+                    </div>
+
+                    <ul class="about-list reveal">
+                        <li>A place where you can come alone and leave knowing people.</li>
+                        <li>A place where your pace doesn't matter.</li>
+                        <li>A place where nobody cares if you ran 2K or 10K.</li>
+                        <li>A place where you don't have to be the fittest person in the group.</li>
+                    </ul>
+                    <p class="reveal"><strong>You just have to show up.</strong></p>
+                    <p class="reveal" style="margin-top: 2.5rem;">
+                        We didn't start a run club because everyone here was a runner.
+                        <strong>We started because nobody was doing anything like this here.</strong>
+                        So we decided to build it ourselves.
+                        One run at a time. One person at a time. One Saturday at a time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ MANIFESTO MARQUEE ═══════════ -->
+    <section class="manifesto">
+        <div class="manifesto-track">
+            <span class="manifesto-item filled">Show Up</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item">Stay Unbound</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item filled">Run Together</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item">No Pace. No Pressure.</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item filled">Just Vibe</span>
+            <span class="manifesto-item">&bull;</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="manifesto-item filled">Show Up</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item">Stay Unbound</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item filled">Run Together</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item">No Pace. No Pressure.</span>
+            <span class="manifesto-item">&bull;</span>
+            <span class="manifesto-item filled">Just Vibe</span>
+            <span class="manifesto-item">&bull;</span>
+        </div>
+    </section>
+
+    <!-- ═══════════ FEATURES ═══════════ -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-label reveal">What is this?</div>
+            <h2 class="about-big-text reveal" style="margin-bottom:0.5rem;">Not just a run club.</h2>
+            <p class="reveal" style="color:var(--gray); font-size:1.05rem; max-width:550px; margin-bottom:1rem; font-weight:300;">
+                It's your excuse to get out of bed. Your weekend plan. Your new group chat. Your next random friendship.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card reveal reveal-delay-1 tilt-card">
+                    <div class="feature-icon">&#x1F3C3;</div>
+                    <h3>Run</h3>
+                    <p>No pace pressure. No distance goals. 2K or 10K — nobody's counting. Just lace up and move.</p>
+                </div>
+                <div class="feature-card reveal reveal-delay-2 tilt-card">
+                    <div class="feature-icon">&#x1F91D;</div>
+                    <h3>Meet</h3>
+                    <p>Come alone, leave with a crew. The random conversations and post-run chai hit different when you're all catching your breath.</p>
+                </div>
+                <div class="feature-card reveal reveal-delay-3 tilt-card">
+                    <div class="feature-icon">&#x26A1;</div>
+                    <h3>Vibe</h3>
+                    <p>The mornings you didn't know you'd remember. The people you didn't know you'd meet. Maybe your favourite part of the week.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ GALLERY ═══════════ -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <div class="gallery-header">
+                <div>
+                    <div class="section-label reveal">The Crew</div>
+                    <h2 class="gallery-title reveal">Gallery</h2>
+                </div>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item big reveal-scale">
+                    <img src="images/DSC_5582.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-1">
+                    <img src="images/IMG_1316.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-2">
+                    <img src="images/4d8efb12-5f85-45d4-b8e2-32f432211e6b.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item wide reveal-scale">
+                    <img src="images/DSC_5588.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-1">
+                    <img src="images/bdbd4dbf-5b67-4a3a-b519-2c57aa6acf2a.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item tall reveal-scale reveal-delay-2">
+                    <img src="images/IMG_1498.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale">
+                    <img src="images/DSC_5596.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-1">
+                    <img src="images/cf65070f-06ac-43c0-a8c7-6f0d3287f075.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item wide reveal-scale reveal-delay-2">
+                    <img src="images/DSC_5602.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale">
+                    <img src="images/IMG_1986.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-1">
+                    <img src="images/IMG_2028.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item tall reveal-scale reveal-delay-2">
+                    <img src="images/IMG_0053.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale">
+                    <img src="images/IMG_1602.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item reveal-scale reveal-delay-1">
+                    <img src="images/IMG_1603.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item wide reveal-scale reveal-delay-2">
+                    <img src="images/IMG_2389.jpeg" alt="Unbound Run Club" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ REELS ═══════════ -->
+    <section class="reels" id="reels">
+        <div class="container">
+            <div class="reels-header">
+                <div>
+                    <div class="section-label reveal">Live Runs</div>
+                    <h2 class="reels-title reveal">The Runs</h2>
+                </div>
+                <span class="reels-scroll-hint reveal">Swipe &rarr;</span>
+            </div>
+        </div>
+        <div class="reels-track" style="padding-left: max(2rem, calc((100vw - 1200px)/2 + 2rem));">
+            <div class="reel-card reveal-scale">
+                <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565441508.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1498.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="reel-card reveal-scale reveal-delay-1">
+                <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565530423.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1602.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="reel-card reveal-scale reveal-delay-2">
+                <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1603.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="reel-card reveal-scale reveal-delay-3">
+                <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1986.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="reel-card reveal-scale reveal-delay-4">
+                <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_2028.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <!-- Spacer for right padding -->
+            <div style="flex:0 0 2rem;"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════ THE FUN PART ═══════════ -->
+    <section class="fun" id="fun">
+        <div class="container">
+            <div class="fun-header">
+                <div>
+                    <div class="section-label reveal">Off the Clock</div>
+                    <h2 class="fun-title reveal">The Fun Part</h2>
+                    <p class="fun-sub reveal">The stuff that happens between the runs. The vibes. The chaos. The memories nobody planned.</p>
+                </div>
+                <span class="reels-scroll-hint reveal">Swipe &rarr;</span>
+            </div>
+        </div>
+        <div class="fun-track" style="padding-left: max(2rem, calc((100vw - 1200px)/2 + 2rem));">
+            <div class="fun-card reveal-scale">
+                <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5582.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="fun-card reveal-scale reveal-delay-1">
+                <video src="fun-reels/Video-55999.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5588.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="fun-card reveal-scale reveal-delay-2">
+                <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5596.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="fun-card reveal-scale reveal-delay-3">
+                <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5602.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="fun-card reveal-scale reveal-delay-4">
+                <video src="fun-reels/Video-98614.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_0053.jpeg"></video>
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div style="flex:0 0 2rem;"></div>
+        </div>
+    </section>
+
+    <!-- ═══════════ JOIN / CTA ═══════════ -->
+    <section class="join" id="join">
+        <div class="join-content container">
+            <h2 class="join-title reveal">Just<br>Show Up.</h2>
+            <p class="join-sub reveal reveal-delay-1">
+                There's always going to be a reason to stay in.
+                Another episode. Another scroll. Another "maybe next week."
+                We'd rather you show up.
+            </p>
+            <a href="#" class="join-btn reveal reveal-delay-2">
+                Join the Run
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="logo.png" alt="UNBOUND Run Club">
+                    <p>PCMC's first community run club. No pace pressure. Just show up.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigate</h4>
+                    <a href="#hero">Home</a>
+                    <a href="#about">Our Story</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#reels">Runs</a>
+                    <a href="#fun">Fun</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">WhatsApp</a>
+                    <a href="#">Strava</a>
+                </div>
+                <div>
+                    <h4 style="font-family:var(--font-heading); font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--neon); margin-bottom:1rem;">Follow Us</h4>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                        </a>
+                        <a href="#" aria-label="Strava">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2025 UNBOUND Run Club. All rights reserved.</span>
+                <span>Made with &#x1F3C3; in PCMC</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════ LIGHTBOX ═══════════ -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <img src="" alt="Gallery image">
+    </div>
+
+    <!-- ═══════════ JAVASCRIPT ═══════════ -->
+    <script>
+        // ──── Preloader ────
+        function hidePreloader() {
+            var preloader = document.getElementById('preloader');
+            if (preloader && !preloader.classList.contains('done')) {
+                preloader.classList.add('done');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', hidePreloader);
+        window.addEventListener('load', function() {
+            setTimeout(hidePreloader, 300);
+        });
+        setTimeout(hidePreloader, 1000); // Safety fallback so black overlay never hangs
+
+        // ──── iOS hero video autoplay fix ────
+        // iOS may not autoplay even with muted+playsinline; force play on first interaction
+        (function() {
+            var heroVideo = document.querySelector('.hero-video');
+            if (heroVideo) {
+                // Try to play immediately
+                var playPromise = heroVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function() {
+                        // Autoplay prevented, play on first user interaction
+                        function playOnInteraction() {
+                            heroVideo.play();
+                            document.removeEventListener('touchstart', playOnInteraction);
+                            document.removeEventListener('click', playOnInteraction);
+                        }
+                        document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+                        document.addEventListener('click', playOnInteraction, { once: true });
+                    });
+                }
+            }
+        })();
+
+        // ──── Navigation scroll effect ────
+        var nav = document.getElementById('nav');
+        var lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            var y = window.scrollY;
+            nav.classList.toggle('scrolled', y > 60);
+            lastScroll = y;
+        }, { passive: true });
+
+        // ──── Mobile menu ────
+        var hamburger = document.getElementById('hamburger');
+        var mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+        mobileMenu.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ──── Active nav link on scroll ────
+        var sections = document.querySelectorAll('section[id]');
+        var navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+        function updateActiveNav() {
+            var y = window.scrollY + 200;
+            sections.forEach(function(section) {
+                var top = section.offsetTop;
+                var height = section.offsetHeight;
+                var id = section.getAttribute('id');
+                if (y >= top && y < top + height) {
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    var active = document.querySelector('.nav-links a[href="#' + id + '"]');
+                    if (active) active.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+        // ──── Scroll reveal ────
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-scale, .reveal-left').forEach(function(el) {
+            revealObserver.observe(el);
+        });
+
+        // ──── 3D Card Tilt (desktop only) ────
+        if (!('ontouchstart' in window)) {
+            document.querySelectorAll('.tilt-card').forEach(function(card) {
+                card.addEventListener('mousemove', function(e) {
+                    var rect = card.getBoundingClientRect();
+                    var x = e.clientX - rect.left;
+                    var y = e.clientY - rect.top;
+                    var cx = rect.width / 2;
+                    var cy = rect.height / 2;
+                    var rX = ((y - cy) / cy) * -8;
+                    var rY = ((x - cx) / cx) * 8;
+                    card.style.transform = 'perspective(800px) rotateX(' + rX + 'deg) rotateY(' + rY + 'deg) translateY(-4px) scale3d(1.02,1.02,1.02)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0) scale3d(1,1,1)';
+                });
+            });
+        }
+
+        // ──── Gallery lightbox ────
+        var lightbox = document.getElementById('lightbox');
+        var lightboxImg = lightbox.querySelector('img');
+        document.querySelectorAll('.gallery-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                lightboxImg.src = item.querySelector('img').src;
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-close') || e.target.parentElement.classList.contains('lightbox-close')) {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ──── Reel + Fun video play/pause (with lazy loading & browser safety) ────
+        document.querySelectorAll('.reel-card, .fun-card').forEach(function(card) {
+            var video = card.querySelector('video');
+            if (!video) return;
+            card.addEventListener('click', function() {
+                if (video.paused) {
+                    // Pause all other videos first
+                    document.querySelectorAll('.reel-card video, .fun-card video').forEach(function(v) {
+                        if (v !== video) {
+                            v.pause();
+                            var parent = v.closest('.reel-card') || v.closest('.fun-card');
+                            if (parent) parent.classList.remove('playing');
+                        }
+                    });
+                    if (video.preload === 'none') {
+                        video.preload = 'auto';
+                    }
+                    video.muted = false;
+                    var p = video.play();
+                    if (p !== undefined) {
+                        p.catch(function() {
+                            video.muted = true;
+                            video.play();
+                        });
+                    }
+                    card.classList.add('playing');
+                } else {
+                    video.pause();
+                    card.classList.remove('playing');
+                }
+            });
+            video.addEventListener('ended', function() {
+                card.classList.remove('playing');
+            });
+        });
+
+        // ──── Smooth scroll for anchor links ────
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ──── Touch-friendly horizontal scroll for card tracks ────
+        (function() {
+            var tracks = document.querySelectorAll('.reels-track, .fun-track');
+            tracks.forEach(function(track) {
+                var isDown = false;
+                var startX, scrollLeft;
+
+                track.addEventListener('mousedown', function(e) {
+                    isDown = true;
+                    track.style.cursor = 'grabbing';
+                    startX = e.pageX - track.offsetLeft;
+                    scrollLeft = track.scrollLeft;
+                });
+                track.addEventListener('mouseleave', function() {
+                    isDown = false;
+                    track.style.cursor = '';
+                });
+                track.addEventListener('mouseup', function() {
+                    isDown = false;
+                    track.style.cursor = '';
+                });
+                track.addEventListener('mousemove', function(e) {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    var x = e.pageX - track.offsetLeft;
+                    var walk = (x - startX) * 1.5;
+                    track.scrollLeft = scrollLeft - walk;
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
