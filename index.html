@@ -144,10 +144,16 @@
             padding: 0.65rem 1.5rem;
             background: var(--neon);
             color: var(--black);
-            border-radius: 2px;
+            border-radius: 4px;
             transition: all 0.3s var(--ease-out-expo);
+            box-shadow: 0 0 15px var(--neon-glow), 0 0 30px rgba(204, 255, 0, 0.25);
+            animation: nav-glow-pulse 2s ease-in-out infinite;
         }
-        .nav-cta:hover { background: var(--white); box-shadow: 0 0 30px var(--neon-glow); }
+        @keyframes nav-glow-pulse {
+            0%, 100% { box-shadow: 0 0 12px var(--neon-glow), 0 0 25px rgba(204, 255, 0, 0.2); }
+            50% { box-shadow: 0 0 25px var(--neon), 0 0 50px rgba(204, 255, 0, 0.4); }
+        }
+        .nav-cta:hover { background: var(--white); color: var(--black); transform: translateY(-2px); box-shadow: 0 0 35px var(--neon), 0 0 70px rgba(204, 255, 0, 0.5); }
 
         /* Hamburger */
         .hamburger {
@@ -1228,6 +1234,169 @@
         }
         .join-social-btn.strava:hover { background: #FC4C02; color: var(--white); transform: translateY(-2px); }
 
+        /* ═══════════ HYDRATION & VOLUNTEER SECTIONS ═══════════ */
+        .hydration-partner {
+            padding: 6rem 0;
+            background: radial-gradient(circle at 80% 20%, rgba(204, 255, 0, 0.05) 0%, transparent 60%), var(--dark-1);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .hydration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hydration-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 1rem 0 1.5rem;
+        }
+        .hydration-desc {
+            font-size: 1.05rem;
+            color: var(--gray-light);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .hydration-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .h-feature {
+            background: var(--dark-2);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s;
+        }
+        .h-feature:hover { transform: translateY(-3px); border-color: rgba(204, 255, 0, 0.3); }
+        .h-icon { font-size: 1.8rem; }
+        .h-feature h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--white); }
+        .h-feature p { font-size: 0.75rem; color: var(--gray); margin-top: 0.2rem; }
+        .hydration-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--neon);
+            color: var(--neon);
+            border-radius: 6px;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .hydration-btn:hover { background: var(--neon); color: var(--black); box-shadow: 0 0 25px var(--neon-glow); }
+        .hydration-btn svg { width: 16px; height: 16px; }
+
+        .hydration-visual { position: relative; }
+        .hydration-card-bg {
+            background: linear-gradient(135deg, rgba(204, 255, 0, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .ew-logo { max-width: 200px; margin: 0 auto 2rem; display: block; filter: drop-shadow(0 0 12px rgba(255,255,255,0.2)); }
+        .ew-products { display: flex; justify-content: center; gap: 1.5rem; align-items: center; }
+        .ew-prod-img { height: 180px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition: transform 0.4s var(--ease-out-expo); }
+        .ew-prod-img:hover { transform: scale(1.1) rotate(3deg); }
+        .ew-badge {
+            display: inline-block;
+            margin-top: 2rem;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--black);
+            background: var(--neon);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+        }
+
+        /* Volunteer section */
+        .volunteer {
+            padding: 5rem 0;
+            background: var(--black);
+        }
+        .volunteer-card {
+            background: linear-gradient(135deg, var(--dark-2), var(--dark-3));
+            border: 1px solid rgba(204, 255, 0, 0.15);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .volunteer-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            margin: 0.5rem 0 1rem;
+        }
+        .volunteer-sub {
+            font-size: 1.05rem;
+            color: var(--gray-light);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+        .volunteer-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+        .role-badge {
+            padding: 0.6rem 1.4rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--white);
+            transition: all 0.3s;
+        }
+        .role-badge:hover { border-color: var(--neon); color: var(--neon); transform: translateY(-2px); }
+        .volunteer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 2.5rem;
+            background: #25D366;
+            color: var(--white);
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+        }
+        .volunteer-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5); }
+
+        @media (max-width: 768px) {
+            .hydration-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hydration-features { grid-template-columns: 1fr; }
+            .volunteer-card { padding: 3rem 1.5rem; }
+        }
+
         @media (max-width: 480px) {
             .join-socials { flex-wrap: wrap; }
             .join-btn-glow { font-size: 0.85rem; padding: 1rem 2rem; }
@@ -1569,6 +1738,76 @@
         </div>
     </section>
 
+    <!-- ═══════════ HYDRATION PARTNER / EXPLOSIVE WHEY ═══════════ -->
+    <section class="hydration-partner" id="hydration">
+        <div class="container">
+            <div class="hydration-grid">
+                <div class="hydration-content reveal">
+                    <span class="section-tag">Official Hydration Partner</span>
+                    <h2 class="hydration-title">Electrolytes on Every Run ⚡</h2>
+                    <p class="hydration-desc">
+                        Running distance takes sweat & stamina. We've partnered with <strong>Explosive Whey</strong> to provide refreshing, high-performance electrolyte drinks at every single UNBOUND run — completely free!
+                    </p>
+                    <div class="hydration-features">
+                        <div class="h-feature">
+                            <span class="h-icon">🥭</span>
+                            <div>
+                                <h4>Mango Energy</h4>
+                                <p>Instant hydration & essential salts</p>
+                            </div>
+                        </div>
+                        <div class="h-feature">
+                            <span class="h-icon">🍉</span>
+                            <div>
+                                <h4>Watermelon Rush</h4>
+                                <p>Zero cramp, maximum stamina</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hydration-actions">
+                        <a href="https://explosivewhey.com/" target="_blank" rel="noopener" class="hydration-btn">
+                            Explore Explosive Whey
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="hydration-visual reveal reveal-delay-2">
+                    <div class="hydration-card-bg">
+                        <img src="images/explosive-whey/logo.png" alt="Explosive Whey Logo" class="ew-logo">
+                        <div class="ew-products">
+                            <img src="images/explosive-whey/mango.png" alt="Mango Electrolytes" class="ew-prod-img">
+                            <img src="images/explosive-whey/watermelon.jpg" alt="Watermelon Electrolytes" class="ew-prod-img">
+                        </div>
+                        <span class="ew-badge">⚡ FREE AT EVERY RUN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ VOLUNTEER SECTION ═══════════ -->
+    <section class="volunteer" id="volunteer">
+        <div class="container">
+            <div class="volunteer-card reveal">
+                <span class="section-tag">Join The Hype Crew</span>
+                <h2 class="volunteer-title">Wanna Be A Volunteer? 🙌</h2>
+                <p class="volunteer-sub">
+                    Not running this Sunday? You can still be part of the magic! We're always looking for route marshals, photographers, hydrators & hype commanders to keep the vibe electric.
+                </p>
+                <div class="volunteer-roles">
+                    <div class="role-badge">📍 Route Marshals</div>
+                    <div class="role-badge">📸 Media & Photographers</div>
+                    <div class="role-badge">🥤 Hydration Crew</div>
+                    <div class="role-badge">📣 Hype Squad</div>
+                </div>
+                <a href="https://chat.whatsapp.com/Kdlw1UPZUtG67hcX4MCmvw" target="_blank" rel="noopener" class="volunteer-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.467A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+                    Apply To Volunteer
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══════════ JOIN / CTA ═══════════ -->
     <section class="join" id="join">
         <div class="join-content container">
@@ -1883,34 +2122,29 @@
             });
         });
 
-        // ──── Touch-friendly horizontal scroll for card tracks ────
-        (function() {
+        // ──── Continuous Auto-Moving Cards Loop ────
+        (function initMovingCards() {
             var tracks = document.querySelectorAll('.reels-track, .fun-track');
             tracks.forEach(function(track) {
-                var isDown = false;
-                var startX, scrollLeft;
+                var isHovered = false;
+                var speed = 0.6; // Speed of movement in px/frame
 
-                track.addEventListener('mousedown', function(e) {
-                    isDown = true;
-                    track.style.cursor = 'grabbing';
-                    startX = e.pageX - track.offsetLeft;
-                    scrollLeft = track.scrollLeft;
-                });
-                track.addEventListener('mouseleave', function() {
-                    isDown = false;
-                    track.style.cursor = '';
-                });
-                track.addEventListener('mouseup', function() {
-                    isDown = false;
-                    track.style.cursor = '';
-                });
-                track.addEventListener('mousemove', function(e) {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    var x = e.pageX - track.offsetLeft;
-                    var walk = (x - startX) * 1.5;
-                    track.scrollLeft = scrollLeft - walk;
-                });
+                track.addEventListener('mouseenter', function() { isHovered = true; });
+                track.addEventListener('mouseleave', function() { isHovered = false; });
+                track.addEventListener('touchstart', function() { isHovered = true; }, {passive: true});
+                track.addEventListener('touchend', function() { isHovered = false; });
+
+                function autoMove() {
+                    var isAnyPlaying = track.querySelector('.reel-card.playing, .fun-card.playing');
+                    if (!isHovered && !isAnyPlaying) {
+                        track.scrollLeft += speed;
+                        if (track.scrollLeft >= (track.scrollWidth - track.clientWidth - 4)) {
+                            track.scrollLeft = 0;
+                        }
+                    }
+                    requestAnimationFrame(autoMove);
+                }
+                requestAnimationFrame(autoMove);
             });
         })();
     </script>
