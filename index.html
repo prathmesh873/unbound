@@ -17,8 +17,12 @@
     <meta property="og:title" content="UNBOUND Run Club | PCMC, Pune">
     <meta property="og:description" content="PCMC's first community run club. Show up. Meet people. Stay unbound.">
     <meta property="og:type" content="website">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="logo.png" as="image">
+    <link rel="preload" href="logo-circle.png" as="image">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ═══════════ VARIABLES ═══════════ */
@@ -612,6 +616,9 @@
             -webkit-overflow-scrolling: touch;
             padding-bottom: 1rem;
             scrollbar-width: none;
+            will-change: scroll-position;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
         .reels-track::-webkit-scrollbar { display: none; }
         .reel-card {
@@ -623,6 +630,11 @@
             background: var(--dark-2);
             border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.4s var(--ease-out-expo);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
         }
         .reel-card:hover {
             border-color: rgba(204, 255, 0, 0.2);
@@ -684,6 +696,9 @@
             -webkit-overflow-scrolling: touch;
             padding-bottom: 1rem;
             scrollbar-width: none;
+            will-change: scroll-position;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
         .fun-track::-webkit-scrollbar { display: none; }
         .fun-card {
@@ -2310,18 +2325,22 @@
             });
         });
 
-        // ──── Seamless Infinite Moving Cards Loop ────
+        // ──── ProMotion 60FPS/120FPS Frame-Independent Moving Cards ────
         (function initContinuousMovingCards() {
             var tracks = document.querySelectorAll('.reels-track, .fun-track');
             tracks.forEach(function(track) {
                 var isInteracting = false;
-                var speed = 1.0; // pixels per frame
+                var baseSpeed = 60; // pixels per second
+                var lastTime = performance.now();
 
-                function step() {
+                function step(now) {
+                    var delta = (now - lastTime) / 1000;
+                    lastTime = now;
+                    if (delta > 0.1) delta = 0.016; // Cap delta on tab switch
+
                     var isPlaying = track.querySelector('.reel-card.playing, .fun-card.playing');
                     if (!isInteracting && !isPlaying) {
-                        track.scrollLeft += speed;
-                        // Halfway reset for seamless loop
+                        track.scrollLeft += baseSpeed * delta;
                         var maxScroll = (track.scrollWidth - track.clientWidth) / 2;
                         if (track.scrollLeft >= maxScroll) {
                             track.scrollLeft = 0;
@@ -2331,10 +2350,10 @@
                 }
 
                 track.addEventListener('mouseenter', function() { isInteracting = true; });
-                track.addEventListener('mouseleave', function() { isInteracting = false; });
+                track.addEventListener('mouseleave', function() { isInteracting = false; lastTime = performance.now(); });
                 track.addEventListener('touchstart', function() { isInteracting = true; }, {passive: true});
-                track.addEventListener('touchend', function() { isInteracting = false; });
-                track.addEventListener('touchcancel', function() { isInteracting = false; });
+                track.addEventListener('touchend', function() { isInteracting = false; lastTime = performance.now(); });
+                track.addEventListener('touchcancel', function() { isInteracting = false; lastTime = performance.now(); });
 
                 requestAnimationFrame(step);
             });
