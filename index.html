@@ -2064,10 +2064,40 @@
 
     <!-- ═══════════ JAVASCRIPT ═══════════ -->
     <script>
-        // ──── Anti-Clickjacking Frame Guard ────
-        if (window.top !== window.self) {
-            try { window.top.location = window.self.location; } catch (e) {}
-        }
+        // ──── Anti-Developer / Anti-DevTools & Anti-Inspect Security ────
+        (function initAntiHackProtection() {
+            // Anti-Clickjacking Frame Guard
+            if (window.top !== window.self) {
+                try { window.top.location = window.self.location; } catch (e) {}
+            }
+
+            // Disable Right-Click Context Menu
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            }, false);
+
+            // Disable Inspection Key Shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
+            window.addEventListener('keydown', function(e) {
+                if (
+                    e.keyCode === 123 || // F12
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I, J, C
+                    (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Cmd+Option+I, J, C (Mac)
+                    (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) // Ctrl+U / Ctrl+S
+                ) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            }, true);
+
+            // Neutralize console tampering
+            try {
+                var dummy = function() {};
+                ['log', 'debug', 'info', 'warn', 'error', 'table'].forEach(function(fn) {
+                    console[fn] = dummy;
+                });
+            } catch (err) {}
+        })();
         // ──── Preloader ────
         function hidePreloader() {
             var preloader = document.getElementById('preloader');
@@ -2190,7 +2220,8 @@
             });
         });
         lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox || e.target.classList.contains('lightbox-close') || e.target.parentElement.classList.contains('lightbox-close')) {
+            var isCloseBtn = e.target.classList.contains('lightbox-close') || (e.target.parentElement && e.target.parentElement.classList.contains('lightbox-close'));
+            if (e.target === lightbox || isCloseBtn) {
                 lightbox.classList.remove('open');
                 document.body.style.overflow = '';
             }
