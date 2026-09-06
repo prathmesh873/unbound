@@ -347,11 +347,6 @@
             align-items: center;
             gap: 1rem;
         }
-        .section-label::before {
-            content: '';
-            width: 30px; height: 1px;
-            background: var(--neon);
-        }
 
         /* ═══════════ ABOUT / STORY ═══════════ */
         .about { padding: 8rem 0; background: var(--black); }
@@ -612,7 +607,6 @@
             display: flex;
             gap: 1.5rem;
             overflow-x: auto;
-            scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 1rem;
             scrollbar-width: none;
@@ -1234,6 +1228,45 @@
         }
         .join-social-btn.strava:hover { background: #FC4C02; color: var(--white); transform: translateY(-2px); }
 
+        .hero-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.95rem 2.2rem;
+            background: var(--neon);
+            color: var(--black);
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            transition: all 0.3s var(--ease-out-expo);
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--neon-glow), 0 0 45px rgba(204, 255, 0, 0.25);
+            animation: hero-glow-pulse 2s ease-in-out infinite;
+        }
+        @keyframes hero-glow-pulse {
+            0%, 100% { box-shadow: 0 0 15px var(--neon-glow), 0 0 35px rgba(204, 255, 0, 0.2); }
+            50% { box-shadow: 0 0 30px var(--neon), 0 0 65px rgba(204, 255, 0, 0.45); }
+        }
+        .hero-cta-btn:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 35px var(--neon), 0 0 75px rgba(204, 255, 0, 0.5);
+        }
+        .mobile-cta-btn {
+            background: var(--neon) !important;
+            color: var(--black) !important;
+            border-radius: 8px;
+            padding: 0.8rem 1.8rem !important;
+            margin-top: 1rem;
+            font-size: 1.1rem !important;
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+
         /* ═══════════ HYDRATION & VOLUNTEER SECTIONS ═══════════ */
         .hydration-partner {
             padding: 6rem 0;
@@ -1443,7 +1476,7 @@
         <a href="#gallery">Gallery</a>
         <a href="#reels">Runs</a>
         <a href="#fun">Fun</a>
-        <a href="#join">Join Us</a>
+        <a href="https://konfhub.com/sundayrun009" target="_blank" rel="noopener" class="mobile-cta-btn">🎟️ Book Tickets / Join Us</a>
     </div>
 
     <!-- ═══════════ HERO ═══════════ -->
@@ -1460,6 +1493,12 @@
             </h1>
             <p class="hero-location">PCMC &bull; Pune</p>
             <p class="hero-tagline">Show up. <em>Stay unbound.</em></p>
+            <a href="https://konfhub.com/sundayrun009" target="_blank" rel="noopener" class="hero-cta-btn">
+                🎟️ Book Ticket / Join Run
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
         <div class="hero-scroll">
             <span>Scroll</span>
@@ -1570,7 +1609,7 @@
                 <div class="feature-card reveal reveal-delay-1 tilt-card">
                     <div class="feature-icon">&#x1F3C3;</div>
                     <h3>Run</h3>
-                    <p>No pace pressure. No distance goals. 2K or 10K — nobody's counting. Just lace up and move.</p>
+                    <p class="feature-card-desc">No pace pressure. No distance goals. 2K or 10K, nobody's counting. Just lace up and move.</p>
                 </div>
                 <div class="feature-card reveal reveal-delay-2 tilt-card">
                     <div class="feature-icon">&#x1F91D;</div>
@@ -1663,25 +1702,56 @@
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="reel-card reveal-scale reveal-delay-1">
+            <div class="reel-card reveal-scale">
                 <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565530423.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1602.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="reel-card reveal-scale reveal-delay-2">
+            <div class="reel-card reveal-scale">
                 <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1603.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="reel-card reveal-scale reveal-delay-3">
+            <div class="reel-card reveal-scale">
                 <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1986.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="reel-card reveal-scale reveal-delay-4">
+            <div class="reel-card reveal-scale">
+                <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_2028.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <!-- Duplicated set for infinite loop -->
+            <div class="reel-card">
+                <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565441508.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1498.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="reel-card">
+                <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565530423.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1602.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="reel-card">
+                <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1603.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="reel-card">
+                <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1986.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="reel-card">
                 <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_2028.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
@@ -1710,25 +1780,56 @@
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="fun-card reveal-scale reveal-delay-1">
+            <div class="fun-card reveal-scale">
                 <video src="fun-reels/Video-55999.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5588.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="fun-card reveal-scale reveal-delay-2">
+            <div class="fun-card reveal-scale">
                 <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5596.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="fun-card reveal-scale reveal-delay-3">
+            <div class="fun-card reveal-scale">
                 <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5602.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
                 <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <div class="fun-card reveal-scale reveal-delay-4">
+            <div class="fun-card reveal-scale">
+                <video src="fun-reels/Video-98614.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_0053.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <!-- Duplicated set for infinite loop -->
+            <div class="fun-card">
+                <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5582.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="fun-card">
+                <video src="fun-reels/Video-55999.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5588.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="fun-card">
+                <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5596.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="fun-card">
+                <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5602.jpeg"></video>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+            </div>
+            <div class="fun-card">
                 <video src="fun-reels/Video-98614.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_0053.jpeg"></video>
                 <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
                 <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
@@ -2122,29 +2223,33 @@
             });
         });
 
-        // ──── Continuous Auto-Moving Cards Loop ────
-        (function initMovingCards() {
+        // ──── Seamless Infinite Moving Cards Loop ────
+        (function initContinuousMovingCards() {
             var tracks = document.querySelectorAll('.reels-track, .fun-track');
             tracks.forEach(function(track) {
-                var isHovered = false;
-                var speed = 0.6; // Speed of movement in px/frame
+                var isInteracting = false;
+                var speed = 1.0; // pixels per frame
 
-                track.addEventListener('mouseenter', function() { isHovered = true; });
-                track.addEventListener('mouseleave', function() { isHovered = false; });
-                track.addEventListener('touchstart', function() { isHovered = true; }, {passive: true});
-                track.addEventListener('touchend', function() { isHovered = false; });
-
-                function autoMove() {
-                    var isAnyPlaying = track.querySelector('.reel-card.playing, .fun-card.playing');
-                    if (!isHovered && !isAnyPlaying) {
+                function step() {
+                    var isPlaying = track.querySelector('.reel-card.playing, .fun-card.playing');
+                    if (!isInteracting && !isPlaying) {
                         track.scrollLeft += speed;
-                        if (track.scrollLeft >= (track.scrollWidth - track.clientWidth - 4)) {
+                        // Halfway reset for seamless loop
+                        var maxScroll = (track.scrollWidth - track.clientWidth) / 2;
+                        if (track.scrollLeft >= maxScroll) {
                             track.scrollLeft = 0;
                         }
                     }
-                    requestAnimationFrame(autoMove);
+                    requestAnimationFrame(step);
                 }
-                requestAnimationFrame(autoMove);
+
+                track.addEventListener('mouseenter', function() { isInteracting = true; });
+                track.addEventListener('mouseleave', function() { isInteracting = false; });
+                track.addEventListener('touchstart', function() { isInteracting = true; }, {passive: true});
+                track.addEventListener('touchend', function() { isInteracting = false; });
+                track.addEventListener('touchcancel', function() { isInteracting = false; });
+
+                requestAnimationFrame(step);
             });
         })();
     </script>
