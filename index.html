@@ -966,6 +966,274 @@
             }
         }
 
+        /* ═══════════ INSTAGRAM OVERLAY ON VIDEO CARDS ═══════════ */
+        .ig-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 3;
+            padding: 14px 14px 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .reel-card.playing .ig-overlay,
+        .fun-card.playing .ig-overlay { opacity: 0; }
+        .ig-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ig-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--neon);
+            object-fit: cover;
+        }
+        .ig-username {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 0.02em;
+        }
+        .ig-logo {
+            margin-left: auto;
+            width: 22px; height: 22px;
+            color: var(--white);
+            opacity: 0.8;
+        }
+        .ig-bottom {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 3;
+            padding: 0 14px 14px;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .reel-card.playing .ig-bottom,
+        .fun-card.playing .ig-bottom { opacity: 0; }
+        .ig-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--white);
+        }
+        .ig-action svg { width: 22px; height: 22px; }
+        .ig-action span {
+            font-size: 0.6rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+        .ig-tap-hint {
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            color: var(--white);
+            opacity: 0.7;
+            margin-left: auto;
+            letter-spacing: 0.05em;
+        }
+
+        /* ═══════════ FOLLOW POPUP ═══════════ */
+        .follow-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            padding: 1.5rem;
+        }
+        .follow-popup.open { opacity: 1; visibility: visible; }
+        .follow-popup-content {
+            background: var(--dark-2);
+            border: 1px solid rgba(204, 255, 0, 0.15);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+        .follow-popup.open .follow-popup-content {
+            transform: scale(1) translateY(0);
+        }
+        .follow-popup-close {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            width: 36px; height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .follow-popup-close:hover { color: var(--white); background: rgba(255,255,255,0.1); }
+        .follow-popup-logo {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            border: 3px solid var(--neon);
+            margin: 0 auto 1.5rem;
+            display: block;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .follow-popup h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+        .follow-popup p {
+            font-size: 0.9rem;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .follow-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: all 0.3s var(--ease-out-expo);
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+            min-height: 48px;
+        }
+        .follow-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .follow-btn-ig {
+            background: linear-gradient(135deg, #833AB4, #E1306C, #F77737);
+            color: var(--white);
+        }
+        .follow-btn-ig:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(225, 48, 108, 0.4); }
+        .follow-btn-wa {
+            background: #25D366;
+            color: var(--white);
+        }
+        .follow-btn-wa:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); }
+        .follow-popup-skip {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.75rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .follow-popup-skip:hover { color: var(--white); }
+
+        /* ═══════════ GLOWING JOIN CTA ═══════════ */
+        .join-btn-glow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 1.1rem 3rem;
+            background: var(--neon);
+            color: var(--black);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            min-height: 56px;
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--neon-glow), 0 0 60px rgba(204, 255, 0, 0.15);
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px var(--neon-glow), 0 0 60px rgba(204, 255, 0, 0.15); }
+            50% { box-shadow: 0 0 30px var(--neon), 0 0 80px rgba(204, 255, 0, 0.3), 0 0 120px rgba(204, 255, 0, 0.1); }
+        }
+        .join-btn-glow::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .join-btn-glow:hover {
+            background: var(--white);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 40px var(--neon), 0 0 100px rgba(204, 255, 0, 0.3);
+        }
+        .join-btn-glow svg { width: 20px; height: 20px; transition: transform 0.3s; }
+        .join-btn-glow:hover svg { transform: translateX(4px); }
+
+        .join-socials {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .join-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            transition: all 0.3s var(--ease-out-expo);
+            text-decoration: none;
+            min-height: 40px;
+        }
+        .join-social-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .join-social-btn.ig {
+            background: rgba(0,0,0,0.15);
+            color: var(--black);
+        }
+        .join-social-btn.ig:hover { background: linear-gradient(135deg, #833AB4, #E1306C); color: var(--white); transform: translateY(-2px); }
+        .join-social-btn.wa {
+            background: rgba(0,0,0,0.15);
+            color: var(--black);
+        }
+        .join-social-btn.wa:hover { background: #25D366; color: var(--white); transform: translateY(-2px); }
+        .join-social-btn.strava {
+            background: rgba(0,0,0,0.15);
+            color: var(--black);
+        }
+        .join-social-btn.strava:hover { background: #FC4C02; color: var(--white); transform: translateY(-2px); }
+
+        @media (max-width: 480px) {
+            .join-socials { flex-wrap: wrap; }
+            .join-btn-glow { font-size: 0.85rem; padding: 1rem 2rem; }
+            .follow-popup-content { padding: 2rem 1.5rem; }
+        }
+
         /* ═══════════ REDUCED MOTION ═══════════ */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -1222,45 +1490,34 @@
         <div class="reels-track" style="padding-left: max(2rem, calc((100vw - 1200px)/2 + 2rem));">
             <div class="reel-card reveal-scale">
                 <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565441508.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1498.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="reel-card reveal-scale reveal-delay-1">
                 <video src="videos/StorySaver.net-koustubhpatil199-Video-1787565530423.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1602.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="reel-card reveal-scale reveal-delay-2">
                 <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1603.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="reel-card reveal-scale reveal-delay-3">
                 <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_1986.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="reel-card reveal-scale reveal-delay-4">
                 <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_2028.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
-            <!-- Spacer for right padding -->
             <div style="flex:0 0 2rem;"></div>
         </div>
     </section>
@@ -1280,43 +1537,33 @@
         <div class="fun-track" style="padding-left: max(2rem, calc((100vw - 1200px)/2 + 2rem));">
             <div class="fun-card reveal-scale">
                 <video src="fun-reels/Video-50642.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5582.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="fun-card reveal-scale reveal-delay-1">
                 <video src="fun-reels/Video-55999.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5588.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="fun-card reveal-scale reveal-delay-2">
                 <video src="fun-reels/Video-74658.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5596.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="fun-card reveal-scale reveal-delay-3">
                 <video src="fun-reels/Video-81180.mp4" muted playsinline webkit-playsinline preload="none" poster="images/DSC_5602.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div class="fun-card reveal-scale reveal-delay-4">
                 <video src="fun-reels/Video-98614.mp4" muted playsinline webkit-playsinline preload="none" poster="images/IMG_0053.jpeg"></video>
-                <div class="play-overlay">
-                    <div class="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
-                    </div>
-                </div>
+                <div class="ig-overlay"><div class="ig-header"><img src="logo-circle.png" class="ig-avatar" alt=""><span class="ig-username">unbound_runclub</span><svg class="ig-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></div></div>
+                <div class="ig-bottom"><div class="ig-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ig-tap-hint">Tap to play</span></div>
+                <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div>
             </div>
             <div style="flex:0 0 2rem;"></div>
         </div>
@@ -1331,12 +1578,26 @@
                 Another episode. Another scroll. Another "maybe next week."
                 We'd rather you show up.
             </p>
-            <a href="#" class="join-btn reveal reveal-delay-2">
-                Join the Run
+            <a href="https://konfhub.com/sundayrun009" target="_blank" rel="noopener" class="join-btn-glow reveal reveal-delay-2" id="bookTicketBtn">
+                🎟️ Book Your Spot
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
             </a>
+            <div class="join-socials reveal reveal-delay-3">
+                <a href="https://www.instagram.com/unbound_runclub" target="_blank" rel="noopener" class="join-social-btn ig">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    Instagram
+                </a>
+                <a href="https://chat.whatsapp.com/Kdlw1UPZUtG67hcX4MCmvw" target="_blank" rel="noopener" class="join-social-btn wa">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.467A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.588-5.932-1.614l-.424-.254-2.75.87.878-2.686-.278-.442A9.776 9.776 0 0 1 2.182 12c0-5.418 4.4-9.818 9.818-9.818S21.818 6.582 21.818 12 17.418 21.818 12 21.818z"/></svg>
+                    WhatsApp
+                </a>
+                <a href="#" class="join-social-btn strava">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+                    Strava
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1358,15 +1619,18 @@
                 </div>
                 <div class="footer-links">
                     <h4>Connect</h4>
-                    <a href="#">Instagram</a>
-                    <a href="#">WhatsApp</a>
+                    <a href="https://www.instagram.com/unbound_runclub" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://chat.whatsapp.com/Kdlw1UPZUtG67hcX4MCmvw" target="_blank" rel="noopener">WhatsApp</a>
                     <a href="#">Strava</a>
                 </div>
                 <div>
                     <h4 style="font-family:var(--font-heading); font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--neon); margin-bottom:1rem;">Follow Us</h4>
                     <div class="footer-social">
-                        <a href="#" aria-label="Instagram">
+                        <a href="https://www.instagram.com/unbound_runclub" target="_blank" rel="noopener" aria-label="Instagram">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                        </a>
+                        <a href="https://chat.whatsapp.com/Kdlw1UPZUtG67hcX4MCmvw" target="_blank" rel="noopener" aria-label="WhatsApp">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.467A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
                         </a>
                         <a href="#" aria-label="Strava">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
@@ -1385,6 +1649,25 @@
     <div class="lightbox" id="lightbox">
         <button class="lightbox-close" aria-label="Close">&times;</button>
         <img src="" alt="Gallery image">
+    </div>
+
+    <!-- ═══════════ FOLLOW POPUP ═══════════ -->
+    <div class="follow-popup" id="followPopup">
+        <div class="follow-popup-content">
+            <button class="follow-popup-close" aria-label="Close">&times;</button>
+            <img src="logo-circle.png" alt="UNBOUND" class="follow-popup-logo">
+            <h3>Enjoyed that? 🏃</h3>
+            <p>Follow us for more runs, vibes & chaos. Join the community!</p>
+            <a href="https://www.instagram.com/unbound_runclub" target="_blank" rel="noopener" class="follow-btn follow-btn-ig">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                Follow on Instagram
+            </a>
+            <a href="https://chat.whatsapp.com/Kdlw1UPZUtG67hcX4MCmvw" target="_blank" rel="noopener" class="follow-btn follow-btn-wa">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.467A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+                Join WhatsApp Community
+            </a>
+            <p class="follow-popup-skip" id="followPopupSkip">Maybe later</p>
+        </div>
     </div>
 
     <!-- ═══════════ JAVASCRIPT ═══════════ -->
@@ -1523,11 +1806,36 @@
             }
         });
 
-        // ──── Reel + Fun video play/pause (with lazy loading & browser safety) ────
+        // ──── Follow Popup Logic ────
+        var followPopup = document.getElementById('followPopup');
+        var followPopupShown = false;
+        function showFollowPopup() {
+            if (followPopupShown) return;
+            followPopupShown = true;
+            followPopup.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeFollowPopup() {
+            followPopup.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        followPopup.addEventListener('click', function(e) {
+            if (e.target === followPopup) closeFollowPopup();
+        });
+        followPopup.querySelector('.follow-popup-close').addEventListener('click', closeFollowPopup);
+        document.getElementById('followPopupSkip').addEventListener('click', closeFollowPopup);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && followPopup.classList.contains('open')) closeFollowPopup();
+        });
+
+        // ──── Reel + Fun video play/pause (with IG overlay & follow popup) ────
+        var videosWatched = 0;
         document.querySelectorAll('.reel-card, .fun-card').forEach(function(card) {
             var video = card.querySelector('video');
             if (!video) return;
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function(e) {
+                // Don't intercept clicks on IG overlay links
+                if (e.target.closest('.ig-overlay a') || e.target.closest('.ig-bottom a')) return;
                 if (video.paused) {
                     // Pause all other videos first
                     document.querySelectorAll('.reel-card video, .fun-card video').forEach(function(v) {
@@ -1556,6 +1864,11 @@
             });
             video.addEventListener('ended', function() {
                 card.classList.remove('playing');
+                videosWatched++;
+                // Show follow popup after first video ends
+                if (videosWatched === 1) {
+                    setTimeout(showFollowPopup, 600);
+                }
             });
         });
 
