@@ -1294,6 +1294,41 @@
             line-height: 1.6;
             margin-bottom: 2rem;
         }
+        .hydration-credits {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .h-credit-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: rgba(204, 255, 0, 0.08);
+            border: 1px solid rgba(204, 255, 0, 0.25);
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .h-credit-badge:hover {
+            background: rgba(204, 255, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(204, 255, 0, 0.15);
+        }
+        .h-credit-icon { font-size: 1.2rem; }
+        .h-credit-label {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--neon);
+        }
+        .h-credit-badge strong {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: var(--white);
+        }
         .hydration-features {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1847,8 +1882,24 @@
                 <div class="hydration-content reveal">
                     <span class="section-tag">Official Hydration Partner</span>
                     <h2 class="hydration-title">Electrolytes on Every Run ⚡</h2>
+                    <div class="hydration-credits">
+                        <div class="h-credit-badge">
+                            <span class="h-credit-icon">👑</span>
+                            <div>
+                                <span class="h-credit-label">BACKED BY</span>
+                                <strong>MS Dhoni</strong>
+                            </div>
+                        </div>
+                        <div class="h-credit-badge">
+                            <span class="h-credit-icon">🏏</span>
+                            <div>
+                                <span class="h-credit-label">FOUNDED BY</span>
+                                <strong>Kedar Jadhav</strong>
+                            </div>
+                        </div>
+                    </div>
                     <p class="hydration-desc">
-                        Running distance takes sweat & stamina. We've partnered with <strong>Explosive Whey</strong> to provide refreshing, high-performance electrolyte drinks at every single UNBOUND run — completely free!
+                        Running distance takes sweat & stamina. We've partnered with <strong>Explosive Whey</strong> — founded by Indian cricketer <strong>Kedar Jadhav</strong> and backed by legendary <strong>MS Dhoni</strong> — to provide refreshing, high-performance electrolyte drinks at every single UNBOUND run, completely free!
                     </p>
                     <div class="hydration-features">
                         <div class="h-feature">
