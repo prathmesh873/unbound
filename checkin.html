@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Run Check-In | UNBOUND Passport</title>
+    <meta name="description" content="Stamp your UNBOUND Passport — check in after completing today's run.">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2582274518954757');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2582274518954757&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <style>
+        :root {
+            --neon: #CCFF00;
+            --neon-dim: rgba(204, 255, 0, 0.12);
+            --neon-glow: rgba(204, 255, 0, 0.4);
+            --black: #000000;
+            --dark: #060606;
+            --dark-2: #0e0e0e;
+            --dark-3: #161616;
+            --white: #ffffff;
+            --gray: #777777;
+            --gray-light: #aaaaaa;
+            --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font-body);
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: calc(2rem + var(--sat)) 1.5rem calc(2rem + var(--sab));
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(204,255,0,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Logo */
+        .logo-wrap { text-align: center; margin-bottom: 2rem; }
+        .logo-wrap img { height: 52px; }
+
+        /* Card */
+        .card {
+            width: 100%; max-width: 420px;
+            background: var(--dark-2);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+        }
+
+        /* Run badge */
+        .run-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--neon); padding: 0.4rem 1rem;
+            border: 1px solid rgba(204,255,0,0.3); border-radius: 50px;
+            margin-bottom: 1.25rem;
+        }
+        .run-badge .dot { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; animation: blink 1.5s ease-in-out infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        .card-title {
+            font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700;
+            color: var(--white); line-height: 1.2; margin-bottom: 0.5rem;
+        }
+        .card-sub {
+            font-size: 0.875rem; color: var(--gray); line-height: 1.6; margin-bottom: 2rem;
+        }
+        .card-sub em { color: var(--neon); font-style: normal; font-weight: 600; }
+
+        /* State panels */
+        .state { display: none; }
+        .state.active { display: block; }
+
+        /* Auth form (same style as passport.html) */
+        .form-group { margin-bottom: 1.1rem; }
+        .form-label {
+            display: block; font-family: var(--font-heading); font-size: 0.68rem;
+            font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--gray-light); margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%; padding: 0.8rem 1rem;
+            background: var(--dark-3); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; color: var(--white); font-size: 0.95rem;
+            outline: none; transition: border-color 0.3s; -webkit-appearance: none;
+            font-family: var(--font-body);
+        }
+        .form-input:focus { border-color: rgba(204,255,0,0.4); box-shadow: 0 0 0 3px rgba(204,255,0,0.07); }
+        .form-input::placeholder { color: var(--gray); }
+
+        .btn {
+            width: 100%; padding: 1rem; margin-top: 0.5rem;
+            border-radius: 12px; font-family: var(--font-heading);
+            font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase; transition: all 0.3s var(--ease-out-expo);
+            min-height: 56px; display: flex; align-items: center;
+            justify-content: center; gap: 0.6rem; cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: var(--neon); color: var(--black);
+            box-shadow: 0 0 20px rgba(204,255,0,0.2);
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(204,255,0,0.2); }
+            50% { box-shadow: 0 0 35px rgba(204,255,0,0.5); }
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--white); transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; animation: none; }
+        .btn-ghost {
+            background: transparent; border: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray-light); margin-top: 0.75rem;
+        }
+        .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+
+        .google-btn {
+            width: 100%; padding: 0.75rem; background: var(--dark-3);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            color: var(--white); font-family: var(--font-heading); font-size: 0.82rem;
+            font-weight: 600; display: flex; align-items: center; justify-content: center;
+            gap: 0.7rem; transition: all 0.3s; min-height: 48px; cursor: pointer;
+        }
+        .google-btn:hover { border-color: rgba(255,255,255,0.25); }
+        .google-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+        .divider { display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+        .divider span { font-size: 0.72rem; color: var(--gray); }
+
+        .msg {
+            padding: 0.85rem 1rem; border-radius: 10px;
+            font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem; display: none;
+        }
+        .msg.show { display: block; }
+        .msg.error { background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.2); color: #ff8080; }
+        .msg.success { background: rgba(204,255,0,0.08); border: 1px solid rgba(204,255,0,0.2); color: var(--neon); }
+
+        /* Spinner */
+        .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(0,0,0,0.25); border-top-color: var(--black); border-radius: 50%; animation: spin 0.65s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Logged-in check-in state */
+        .user-pill {
+            display: flex; align-items: center; gap: 0.85rem;
+            background: var(--dark-3); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;
+        }
+        .user-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--neon-dim); border: 2px solid var(--neon);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem;
+            color: var(--neon); flex-shrink: 0;
+        }
+        .user-info {}
+        .user-name { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--white); }
+        .user-passport { font-size: 0.72rem; color: var(--gray); margin-top: 0.1rem; }
+
+        /* Success state */
+        .success-icon {
+            width: 96px; height: 96px; border-radius: 50%;
+            background: rgba(204,255,0,0.1); border: 3px solid var(--neon);
+            margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; animation: pop 0.6s var(--ease-out-expo);
+            box-shadow: 0 0 40px rgba(204,255,0,0.25);
+        }
+        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .success-title {
+            font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700;
+            color: var(--white); margin-bottom: 0.5rem; text-align: center; line-height: 1.1;
+        }
+        .success-sub { font-size: 0.9rem; color: var(--gray); text-align: center; line-height: 1.6; margin-bottom: 0.5rem; }
+        .success-sub em { color: var(--neon); font-style: normal; font-weight: 600; }
+        .new-count {
+            font-family: var(--font-heading); font-size: 3.5rem; font-weight: 700;
+            color: var(--neon); text-align: center; line-height: 1;
+            margin: 1.25rem 0; text-shadow: 0 0 30px rgba(204,255,0,0.4);
+            animation: count-pop 0.5s var(--ease-out-expo) 0.3s both;
+        }
+        @keyframes count-pop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .new-count span { font-size: 1rem; color: var(--gray); font-weight: 400; display: block; }
+
+        /* Milestone unlocked alert */
+        .milestone-alert {
+            background: linear-gradient(135deg, rgba(204,255,0,0.15), rgba(204,255,0,0.05));
+            border: 1px solid rgba(204,255,0,0.4); border-radius: 14px;
+            padding: 1.25rem; text-align: center; margin: 1rem 0;
+            animation: slide-up 0.5s var(--ease-out-expo) 0.5s both;
+        }
+        @keyframes slide-up { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        .milestone-alert .m-emoji { font-size: 2rem; margin-bottom: 0.4rem; }
+        .milestone-alert .m-title {
+            font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.2em; color: var(--neon); text-transform: uppercase; margin-bottom: 0.25rem;
+        }
+        .milestone-alert .m-reward {
+            font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--white);
+        }
+        .milestone-alert .m-claim {
+            font-size: 0.78rem; color: rgba(204,255,0,0.7); margin-top: 0.4rem;
+        }
+
+        /* Already checked in */
+        .already-icon {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(255,170,0,0.1); border: 2px solid rgba(255,170,0,0.4);
+            margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+        }
+
+        /* Error state */
+        .error-icon {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(255,80,80,0.08); border: 2px solid rgba(255,80,80,0.3);
+            margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+        }
+
+        /* View passport link */
+        .passport-link {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase; color: var(--black);
+            background: var(--neon); border-radius: 10px; padding: 0.85rem 1.5rem;
+            text-decoration: none; transition: all 0.3s; margin-top: 1.25rem; min-height: 48px;
+        }
+        .passport-link:hover { background: var(--white); transform: translateY(-2px); }
+
+        .switch-link {
+            text-align: center; margin-top: 1.1rem;
+            font-size: 0.8rem; color: var(--gray);
+        }
+        .switch-link button {
+            color: var(--neon); font-size: 0.8rem; font-weight: 600;
+            background: none; border: none; cursor: pointer;
+        }
+
+        /* Invalid run state */
+        .invalid-wrap { text-align: center; padding: 1rem 0; }
+        .invalid-wrap .big { font-size: 3rem; margin-bottom: 1rem; }
+        .invalid-wrap h2 { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .invalid-wrap p { font-size: 0.875rem; color: var(--gray); line-height: 1.6; }
+
+        /* Confetti canvas */
+        #confetti-canvas {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="logo-wrap">
+        <img src="logo.png" alt="UNBOUND Run Club" onerror="this.style.display='none'">
+    </div>
+
+    <div class="card">
+        <!-- Run badge -->
+        <div class="run-badge" id="run-badge"><span class="dot"></span> <span id="run-label">Loading run...</span></div>
+
+        <!-- STATE: INVALID RUN -->
+        <div class="state" id="state-invalid">
+            <div class="invalid-wrap">
+                <div class="big">🔗</div>
+                <h2>Invalid QR Code</h2>
+                <p>This QR code is either expired or doesn't match a scheduled UNBOUND run. Please scan the correct QR code at the event.</p>
+            </div>
+        </div>
+
+        <!-- STATE: NOT SIGNED IN → show sign-in/signup -->
+        <div class="state" id="state-auth">
+            <div id="auth-sub-panel-signin">
+                <h2 class="card-title">Sign in to get stamped</h2>
+                <p class="card-sub">After signing in, we'll stamp your passport for <em id="run-name-signin">today's run</em> automatically.</p>
+                <div class="msg" id="msg-auth"></div>
+                <div class="form-group">
+                    <label class="form-label" for="auth-email">Email</label>
+                    <input type="email" id="auth-email" class="form-input" placeholder="you@example.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="auth-pass">Password</label>
+                    <input type="password" id="auth-pass" class="form-input" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button class="btn btn-primary" id="signin-btn" onclick="doSignIn()">Sign In & Get Stamped</button>
+                <div class="divider"><span>or</span></div>
+                <button class="google-btn" onclick="doGoogleSignIn()">
+                    <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Continue with Google
+                </button>
+                <div class="switch-link">
+                    No passport yet? <button onclick="showSignup()">Create one first →</button>
+                </div>
+            </div>
+
+            <!-- Quick sign-up panel -->
+            <div id="auth-sub-panel-signup" style="display:none;">
+                <h2 class="card-title">Create your passport</h2>
+                <p class="card-sub">Takes 30 seconds. Then we'll stamp your first run right away.</p>
+                <div class="msg" id="msg-signup"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="su-fname">First Name</label>
+                        <input type="text" id="su-fname" class="form-input" placeholder="Rahul" autocomplete="given-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="su-lname">Last Name</label>
+                        <input type="text" id="su-lname" class="form-input" placeholder="Sharma" autocomplete="family-name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="su-email">Email</label>
+                    <input type="email" id="su-email" class="form-input" placeholder="you@example.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="su-pass">Password</label>
+                    <input type="password" id="su-pass" class="form-input" placeholder="Min. 8 characters" autocomplete="new-password">
+                </div>
+                <button class="btn btn-primary" id="signup-btn" onclick="doSignUp()">Create Passport & Get Stamped</button>
+                <div class="divider"><span>or</span></div>
+                <button class="google-btn" onclick="doGoogleSignIn()">
+                    <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Sign Up with Google
+                </button>
+                <div class="switch-link">
+                    Already have a passport? <button onclick="showSignin()">Sign in →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATE: SIGNED IN → ready to check in -->
+        <div class="state" id="state-checkin">
+            <h2 class="card-title" id="checkin-title">Stamp My Passport</h2>
+            <p class="card-sub">You've completed <em id="run-name-checkin">today's run</em>. One tap to stamp it officially.</p>
+            <div class="user-pill" id="user-pill">
+                <div class="user-avatar" id="user-avatar">?</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name-display">—</div>
+                    <div class="user-passport" id="user-passport-display">Loading passport...</div>
+                </div>
+            </div>
+            <div class="msg" id="msg-checkin"></div>
+            <button class="btn btn-primary" id="checkin-btn" onclick="doCheckIn()">
+                🏃 STAMP MY PASSPORT
+            </button>
+            <button class="btn btn-ghost" onclick="doSignOut()">Not you? Sign out</button>
+        </div>
+
+        <!-- STATE: ALREADY CHECKED IN -->
+        <div class="state" id="state-already">
+            <div class="already-icon">✋</div>
+            <h2 class="card-title" style="text-align:center;">Already Stamped!</h2>
+            <p class="card-sub" style="text-align:center;">You've already checked in for <em id="already-run-name">this run</em>. No double stamps — see you at the next one!</p>
+            <a href="passport.html" class="passport-link">View My Passport →</a>
+        </div>
+
+        <!-- STATE: SUCCESS -->
+        <div class="state" id="state-success">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">Stamped! 🎉</h2>
+            <p class="success-sub">Your passport has been updated for <em id="success-run-name">this run</em>.</p>
+            <div class="new-count" id="new-count">
+                0
+                <span>total runs</span>
+            </div>
+            <div id="milestone-alert-wrap"></div>
+            <a href="passport.html" class="passport-link">View My Passport →</a>
+        </div>
+
+        <!-- STATE: ERROR -->
+        <div class="state" id="state-error">
+            <div class="error-icon">⚠️</div>
+            <h2 class="card-title" style="text-align:center;">Something went wrong</h2>
+            <p class="card-sub" style="text-align:center;" id="error-msg-text">Could not stamp your passport. Please try again or contact the UNBOUND team.</p>
+            <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
+        </div>
+
+        <!-- STATE: LOADING -->
+        <div class="state" id="state-loading">
+            <div style="text-align:center;padding:2rem 0;">
+                <div style="width:48px;height:48px;border:3px solid rgba(204,255,0,0.2);border-top-color:var(--neon);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1.5rem;"></div>
+                <p style="color:var(--gray);font-size:0.9rem;">Loading...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import {
+            getAuth, onAuthStateChanged, signOut,
+            signInWithEmailAndPassword, createUserWithEmailAndPassword,
+            GoogleAuthProvider, signInWithPopup, updateProfile
+        } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import {
+            getFirestore, doc, getDoc, setDoc, updateDoc,
+            increment, serverTimestamp, runTransaction
+        } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+        // ══════════════════════════════════════════════
+        // ⚠️  PASTE YOUR FIREBASE CONFIG HERE (same as passport.html)
+        // ══════════════════════════════════════════════
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        // ══════════════════════════════════════════════
+
+        const MILESTONES = [
+            { runs: 5,   emoji: '🎁', reward: 'Unbound Sticker' },
+            { runs: 10,  emoji: '👕', reward: 'Limited Edition Tee' },
+            { runs: 25,  emoji: '🧢', reward: 'Exclusive Cap' },
+            { runs: 50,  emoji: '🧥', reward: 'Club Jacket' },
+            { runs: 100, emoji: '🏅', reward: 'Legendary Status' },
+        ];
+
+        function generatePassportNumber(uid) {
+            let hash = 0;
+            for (let i = 0; i < uid.length; i++) { hash = ((hash << 5) - hash) + uid.charCodeAt(i); hash |= 0; }
+            return 'UB-' + (Math.abs(hash) % 9000 + 1000);
+        }
+
+        function showState(id) {
+            document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+            const el = document.getElementById('state-' + id);
+            if (el) el.classList.add('active');
+        }
+        function setBtn(id, loading, text) {
+            const b = document.getElementById(id);
+            if (!b) return;
+            b.disabled = loading;
+            b.innerHTML = loading ? '<div class="spinner"></div>' : text;
+        }
+        function showMsg(id, text, type) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = text;
+            el.className = 'msg show ' + type;
+        }
+        function clearMsg(id) {
+            const el = document.getElementById(id);
+            if (el) el.className = 'msg';
+        }
+
+        window.showSignup = () => {
+            document.getElementById('auth-sub-panel-signin').style.display = 'none';
+            document.getElementById('auth-sub-panel-signup').style.display = 'block';
+        };
+        window.showSignin = () => {
+            document.getElementById('auth-sub-panel-signup').style.display = 'none';
+            document.getElementById('auth-sub-panel-signin').style.display = 'block';
+        };
+
+        // Parse run ID from URL: ?run=RUN009
+        const params = new URLSearchParams(location.search);
+        const runId = params.get('run');
+
+        if (!runId || !firebaseConfig.apiKey.includes('YOUR_') === false) {
+            // Firebase not configured — demo mode
+        }
+
+        if (!runId) {
+            showState('invalid');
+            document.getElementById('run-badge').style.display = 'none';
+        } else {
+            document.getElementById('run-label').textContent = runId;
+            document.getElementById('run-name-signin').textContent = runId;
+            document.getElementById('run-name-checkin').textContent = runId;
+            document.getElementById('already-run-name').textContent = runId;
+            document.getElementById('success-run-name').textContent = runId;
+            document.getElementById('checkin-title').textContent = 'Stamp for ' + runId;
+        }
+
+        let app, auth, db, googleProvider;
+        let currentUser = null;
+        let passportData = null;
+        let isConfigured = !firebaseConfig.apiKey.includes('YOUR_');
+
+        if (!isConfigured) {
+            showState('invalid');
+            document.querySelector('.invalid-wrap .big').textContent = '⚙️';
+            document.querySelector('.invalid-wrap h2').textContent = 'Firebase Not Set Up Yet';
+            document.querySelector('.invalid-wrap p').textContent = 'Add your Firebase config to checkin.html to activate this page. See PASSPORT_SETUP.md for instructions.';
+        } else {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            googleProvider = new GoogleAuthProvider();
+
+            if (!runId) {
+                showState('invalid');
+            } else {
+                showState('loading');
+
+                // Check if run exists in Firestore (optional: you create run docs)
+                // We'll allow check-in for any valid run ID for simplicity.
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUser = user;
+                        await loadPassportAndCheckIn(user);
+                    } else {
+                        currentUser = null;
+                        showState('auth');
+                    }
+                });
+            }
+
+            async function loadPassportAndCheckIn(user) {
+                // Load passport data
+                const passSnap = await getDoc(doc(db, 'passports', user.uid));
+                if (passSnap.exists()) {
+                    passportData = passSnap.data();
+                } else {
+                    // Auto-create passport (Google sign-in users)
+                    const names = (user.displayName || '').split(' ');
+                    passportData = {
+                        firstName: names[0] || 'Runner',
+                        lastName: names.slice(1).join(' ') || '',
+                        email: user.email,
+                        instagram: '',
+                        phone: '',
+                        passportNumber: generatePassportNumber(user.uid),
+                        runsCompleted: 0,
+                        createdAt: serverTimestamp(),
+                    };
+                    await setDoc(doc(db, 'passports', user.uid), passportData);
+                }
+
+                // Check if already checked in for this run
+                const checkinId = user.uid + '_' + runId;
+                const checkinSnap = await getDoc(doc(db, 'checkins', checkinId));
+                if (checkinSnap.exists()) {
+                    showState('already');
+                    return;
+                }
+
+                // Show check-in UI
+                const initials = ((passportData.firstName || '')[0] || '?').toUpperCase();
+                document.getElementById('user-avatar').textContent = initials;
+                document.getElementById('user-name-display').textContent =
+                    (passportData.firstName || '') + ' ' + (passportData.lastName || '');
+                document.getElementById('user-passport-display').textContent =
+                    (passportData.passportNumber || '???') + ' · ' + (passportData.runsCompleted || 0) + ' runs';
+                showState('checkin');
+            }
+
+            // ── DO CHECK-IN (atomic transaction) ──
+            window.doCheckIn = async function() {
+                if (!currentUser || !runId) return;
+                setBtn('checkin-btn', true, '');
+                clearMsg('msg-checkin');
+
+                const checkinId = currentUser.uid + '_' + runId;
+                const checkinRef = doc(db, 'checkins', checkinId);
+                const passportRef = doc(db, 'passports', currentUser.uid);
+                const runRef = doc(db, 'runs', runId);
+
+                try {
+                    let newRunCount = 0;
+
+                    await runTransaction(db, async (tx) => {
+                        const checkinSnap = await tx.get(checkinRef);
+                        if (checkinSnap.exists()) throw new Error('already_checked_in');
+
+                        const passSnap = await tx.get(passportRef);
+                        const current = passSnap.exists() ? (passSnap.data().runsCompleted || 0) : 0;
+                        newRunCount = current + 1;
+
+                        // Write check-in record (prevents duplicates)
+                        tx.set(checkinRef, {
+                            userId: currentUser.uid,
+                            runId: runId,
+                            timestamp: serverTimestamp(),
+                            userName: (passportData.firstName || '') + ' ' + (passportData.lastName || ''),
+                            email: currentUser.email,
+                            passportNumber: passportData.passportNumber || '',
+                        });
+
+                        // Increment passport run count
+                        tx.update(passportRef, {
+                            runsCompleted: increment(1),
+                            lastRunId: runId,
+                            lastRunAt: serverTimestamp(),
+                        });
+
+                        // Increment run's attendance count
+                        tx.set(runRef, { attendees: increment(1), runId }, { merge: true });
+                    });
+
+                    // Check for milestone unlocked
+                    const milestoneMet = MILESTONES.find(m => m.runs === newRunCount);
+
+                    // Show success
+                    document.getElementById('new-count').innerHTML = newRunCount + '<span>total runs</span>';
+                    document.getElementById('success-run-name').textContent = runId;
+
+                    if (milestoneMet) {
+                        document.getElementById('milestone-alert-wrap').innerHTML = `
+                            <div class="milestone-alert">
+                                <div class="m-emoji">${milestoneMet.emoji}</div>
+                                <div class="m-title">🎉 Milestone Unlocked!</div>
+                                <div class="m-reward">${milestoneMet.reward}</div>
+                                <div class="m-claim">DM @unbound_runclub on Instagram to claim your reward!</div>
+                            </div>
+                        `;
+                        shootConfetti();
+                    }
+
+                    showState('success');
+                    shootConfetti(milestoneMet ? 200 : 60);
+
+                } catch (e) {
+                    if (e.message === 'already_checked_in') {
+                        showState('already');
+                    } else {
+                        console.error(e);
+                        document.getElementById('error-msg-text').textContent = 'Transaction failed. Please try again.';
+                        showState('error');
+                    }
+                }
+            };
+
+            // ── AUTH HANDLERS ──
+            window.doSignIn = async function() {
+                const email = document.getElementById('auth-email').value.trim();
+                const pass = document.getElementById('auth-pass').value;
+                if (!email || !pass) { showMsg('msg-auth', 'Enter your email and password.', 'error'); return; }
+                setBtn('signin-btn', true, '');
+                clearMsg('msg-auth');
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    // onAuthStateChanged handles the rest
+                } catch (e) {
+                    const msgs = {
+                        'auth/user-not-found': 'No passport found with this email.',
+                        'auth/wrong-password': 'Incorrect password.',
+                        'auth/invalid-credential': 'Invalid email or password.',
+                        'auth/too-many-requests': 'Too many attempts. Try again later.',
+                    };
+                    showMsg('msg-auth', msgs[e.code] || 'Sign in failed.', 'error');
+                    setBtn('signin-btn', false, 'Sign In & Get Stamped');
+                }
+            };
+
+            window.doSignUp = async function() {
+                const fname = document.getElementById('su-fname').value.trim();
+                const lname = document.getElementById('su-lname').value.trim();
+                const email = document.getElementById('su-email').value.trim();
+                const pass = document.getElementById('su-pass').value;
+                if (!fname || !email || !pass) { showMsg('msg-signup', 'Fill in all required fields.', 'error'); return; }
+                if (pass.length < 8) { showMsg('msg-signup', 'Password must be at least 8 characters.', 'error'); return; }
+                setBtn('signup-btn', true, '');
+                clearMsg('msg-signup');
+                try {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(cred.user, { displayName: fname + ' ' + lname });
+                    // Create passport
+                    const data = {
+                        firstName: fname, lastName: lname, email,
+                        phone: '', instagram: '',
+                        passportNumber: generatePassportNumber(cred.user.uid),
+                        runsCompleted: 0,
+                        createdAt: serverTimestamp(),
+                    };
+                    await setDoc(doc(db, 'passports', cred.user.uid), data);
+                    passportData = data;
+                    // onAuthStateChanged will fire and load check-in screen
+                } catch (e) {
+                    const msgs = {
+                        'auth/email-already-in-use': 'Email already in use. Sign in instead.',
+                        'auth/invalid-email': 'Invalid email address.',
+                    };
+                    showMsg('msg-signup', msgs[e.code] || 'Sign up failed.', 'error');
+                    setBtn('signup-btn', false, 'Create Passport & Get Stamped');
+                }
+            };
+
+            window.doGoogleSignIn = async function() {
+                try {
+                    await signInWithPopup(auth, googleProvider);
+                } catch (e) {
+                    if (e.code !== 'auth/popup-closed-by-user') {
+                        showMsg('msg-auth', 'Google sign-in failed. Try again.', 'error');
+                    }
+                }
+            };
+
+            window.doSignOut = async function() {
+                await signOut(auth);
+            };
+        }
+
+        // ── CONFETTI ──
+        function shootConfetti(count = 80) {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#CCFF00', '#ffffff', '#A3CC00', '#ffff00', '#00ff88'];
+
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: -10,
+                    w: Math.random() * 10 + 4,
+                    h: Math.random() * 6 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: Math.random() * 4 + 2,
+                    rotation: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 8,
+                    opacity: 1,
+                });
+            }
+
+            let frame;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.rotation += p.rotSpeed;
+                    p.opacity -= 0.008;
+                    if (p.y < canvas.height && p.opacity > 0) alive = true;
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, p.opacity);
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                if (alive) frame = requestAnimationFrame(draw);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            draw();
+        }
+
+        window.addEventListener('resize', () => {
+            const c = document.getElementById('confetti-canvas');
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
+        });
+    </script>
+
+</body>
+</html>
