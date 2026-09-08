@@ -4,6 +4,7 @@ package.json
 package-lock.json
 optimize-images.js
 test-images.html
+passport.html
 *.log
 
 # Exclude raw 100MB+ uncompressed videos not used on site
